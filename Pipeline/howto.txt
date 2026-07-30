@@ -1,3 +1,9 @@
+docker rm $(docker ps -aq)
+
+docker compose up
+
+------------------------
+
 docker run -it --rm \
   --network=pipeline_default \
   taxi_ingest:v001 \
