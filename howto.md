@@ -1,5 +1,11 @@
 ## Bash
 
+##### Create api key env variable, so we don't expose it in a file (terminal session)
+```bash
+export GEMINI_API_KEY="your-api-key-here"
+echo $GEMINI_API_KEY
+```
+
 #### Change prompt
 
 ##### current session
