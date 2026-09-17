@@ -384,3 +384,179 @@ df.to_parquet(f"output_{month}.parquet")
 df.head(0).to_sql(name='yellow_taxi_data', con=engine, if_exists='replace')
 ```
 
+## dbt
+```
+- dbt Packages are similar to python libraries
+- dbt hub: https://hub.getdbt.com/
+- utils: SQL logic: https://hub.getdbt.com/dbt-labs/dbt_utils/latest/
+- project evaluator: test your project and give a score: https://hub.getdbt.com/dbt-labs/dbt_project_evaluator/latest/
+- codegen: helps generate yml files: https://hub.getdbt.com/dbt-labs/codegen/latest/
+- audit helper: useful for refactoring: https://hub.getdbt.com/dbt-labs/audit_helper/latest/
+- expectations: testing: https://hub.getdbt.com/metaplane/dbt_expectations/latest/
+```
+
+##### How to install a package
+In the project directory, add a file named ```packages.yml``` and specify package name and version like so:
+```yml
+packages:
+  - package: dbt-labs/dbt_utils
+    version: 1.3.3
+```
+```bash
+> dbt deps
+```
+
+##### How to use a dbt package macro
+```sql
+select
+    {{ dbt_utils.generate_surrogate_key([
+        'vendor_id',
+        'pickup_datetime',
+        'pickup_location_id',
+        'payment_type'
+    ]) }} as trip_id
+from trips_unioned
+```
+
+##### Initialize a dbt project and create directory structure (Only need to run once at the beginning)
+```bash
+> dbt init
+```
+
+##### Check if our profiles are valid according to the database we're working on
+```bash
+> dbt debug
+```
+
+##### Ingest all .csv files that are in seeds folder
+```bash
+> dbt seed
+```
+
+##### Take a snapshot and compare
+```bash
+> dbt snapshot
+```
+
+##### Check how up-to-date our source tables are
+```bash
+> dbt source freshness
+```
+
+##### Generate catalog.json
+```bash
+> dbt docs generate
+```
+
+##### Browse local docs website (not needed in dbt cloud)
+```bash
+> dbt docs serve
+```
+
+##### Remove files specified in dbt_project.yml
+```yml
+# Delete "target" and "dbt_packages" folders
+clean-targets:
+  - "target"
+  - "dbt_packages"
+```
+```bash
+> dbt clean
+```
+
+##### Compile and store our code at ./target/compiled (useful to spot errors at zero cost)
+```bash
+> dbt compile
+```
+
+##### Materialize all models in our project
+```bash
+> dbt run
+```
+
+##### Run all tests in our project
+```bash
+> dbt test
+```
+
+##### Build project
+```bash
+> dbt build
+```
+
+##### Resume 'build' from where it left off after fixing errors, rather than restarting from scratch and wasting resources.
+```bash
+> dbt retry
+```
+
+##### Display an overview of all commands
+```bash
+> dbt --help
+or
+> dbt -h
+```
+
+##### Check dbt version
+```bash
+> dbt --version
+or
+> dbt -v
+```
+
+##### If there's an incremental model in our project, drop all and upload again from scratch, instead of adding data incrementally
+```bash
+> dbt run --full-refresh
+```
+
+##### Strict Run: let it fail on any warning
+```bash
+> dbt run --fail-fast
+```
+
+##### Specify a target. By default, dbt targets 'dev'
+```bash
+> dbt test -t prod
+```
+
+##### Run a single model
+```bash
+> dbt run -s stg_green_tripdata
+or
+> dbt run --select stg_green_tripdata
+```
+
+##### Run a single model + all ancestors (upstream)
+```bash
+> dbt run -s +int_trips_unioned
+```
+
+##### Run a single model + all descendants (downstream)
+```bash
+> dbt run -s int_trips_unioned+
+```
+
+##### Run a single model + everything upstream and downstream
+```bash
+> dbt run -s +int_trips_unioned+
+```
+
+##### Run every model inside a directory
+```bash
+> dbt run -s models/intermediate
+```
+
+##### Run all models with a specific tag
+```bash
+> dbt run -s tag:mytesttag
+```
+
+##### Run all models that are new files
+```bash
+> dbt run -s state:new
+```
+
+##### Run all models that have changed
+```bash
+> dbt run -s state:modified
+```
+
