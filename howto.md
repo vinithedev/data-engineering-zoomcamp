@@ -560,3 +560,25 @@ or
 > dbt run -s state:modified
 ```
 
+## bruin
+
+#### Run an entire pipeline
+```bash
+> bruin run nyc-taxi/pipeline.yml
+```
+
+#### Run specifying parameters
+```bash
+> bruin run ./pipelines/nyc-taxi/pipeline.yml \
+  --start-date 2020-01-01 \
+  --end-date 2020-01-31 \
+  --full-refresh \
+  --var taxi_types=["yellow","green"] \
+  --environment default
+```
+
+#### Validate to make sure config and deps are correct
+```bash
+> bruin validate
+```
+
