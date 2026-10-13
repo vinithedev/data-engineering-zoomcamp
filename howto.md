@@ -582,3 +582,53 @@ or
 > bruin validate
 ```
 
+## Spark
+
+#### Install Java 17
+```bash
+> mkdir -p /c/tools
+> curl -fLO https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.18%2B8/OpenJDK17U-jdk_x64_windows_hotspot_17.0.18_8.zip
+> unzip OpenJDK17U-jdk_x64_windows_hotspot_17.0.18_8.zip -d /c/tools/
+> rm OpenJDK17U-jdk_x64_windows_hotspot_17.0.18_8.zip
+> ls /c/tools
+> /c/tools/jdk-17.0.18+8/bin/java -version
+> export JAVA_HOME="/c/tools/jdk-17.0.18+8"
+> export PATH="$JAVA_HOME/bin:$PATH"
+> setx JAVA_HOME 'C:\tools\jdk-17.0.18+8'
+> java -version
+openjdk version "17.0.18" 2026-01-20
+OpenJDK Runtime Environment Temurin-17.0.18+8 (build 17.0.18+8)
+OpenJDK 64-Bit Server VM Temurin-17.0.18+8 (build 17.0.18+8, mixed mode, sharing)
+```
+
+#### Install PySpark
+```bash
+> mkdir batch && cd batch
+> uv init
+> uv add pyspark
+```
+
+#### Start Spark
+```bash
+> uv run jupyter notebook --notebook-dir notebooks
+Run start_spark except last line
+http://localhost:4040/
+```
+
+#### Start Spark (Standalone)
+```bash
+Terminal 1 (master):
+> export SPARK_HOME='D:\data-engineering\data-engineering-zoomcamp\batch\.venv\Lib\site-packages\pyspark'
+> setx SPARK_HOME 'D:\data-engineering\data-engineering-zoomcamp\batch\.venv\Lib\site-packages\pyspark'
+> spark-class.cmd org.apache.spark.deploy.master.Master --host localhost
+
+Terminal 2 (slave):
+> export SPARK_HOME='D:\data-engineering\data-engineering-zoomcamp\batch\.venv\Lib\site-packages\pyspark'
+> setx SPARK_HOME 'D:\data-engineering\data-engineering-zoomcamp\batch\.venv\Lib\site-packages\pyspark'
+> spark-class.cmd org.apache.spark.deploy.worker.Worker spark://localhost:7077 --host localhost
+
+http://localhost:8080/
+```
+
+
+

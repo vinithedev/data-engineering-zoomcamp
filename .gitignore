@@ -1,4 +1,6 @@
 .bruin.yml
+# GCP service account keys
+/keys/
 /duckdb.db
 /duckdb.db.wal
 logs/runs
@@ -6,3 +8,15 @@ logs/*.log
 __pycache__/
 *.py[cod]
 logs/queries
+
+# Spark batch module: downloaded trip data, connector jars and Spark output
+batch/data/
+batch/tmp/
+batch/zones/
+batch/notebooks/fhvhv/
+batch/**/*.csv
+batch/**/*.csv.gz
+batch/**/*.parquet
+batch/**/*.parquet.gz
+batch/**/*.jar
+.ipynb_checkpoints/
